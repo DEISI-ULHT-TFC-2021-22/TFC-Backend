@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option csharp_namespace = "Server";
+
+package mobile;
+
+service Mobile {
+  rpc EnterParkRequest (EnterPark) returns (EnterParkReply);
+  rpc ExitParkRequest (ExitPark) returns (ExitParkReply);
+  rpc AbrirCancela (Pedido) returns (Resposta);
+}
+
+message EnterPark {
+}
+
+message EnterParkReply {
+  string message = 1;
+}
+
+message ExitPark {
+}
+
+message ExitParkReply {
+  string message = 1;
+}
+
+message Pedido{
+  bool cancelaEntrada = 1;
+}
+
+message Resposta{
+  string mensagem = 1;
+}

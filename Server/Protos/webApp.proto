@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "Server";
+
+package webApp;
+
+service WebApp {
+  rpc ProcurarUser (Info) returns (Result);
+}
+
+message Info {
+	string tipoUser = 1;
+	string campo = 2;
+	string dados = 3;
+}
+
+message Result {
+	string message = 1;
+}

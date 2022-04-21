@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "Server";
+
+package mobile;
+
+service Mobile {
+  rpc AbrirCancela (Pedido) returns (Resposta);
+}
+
+message Pedido{
+  bool cancelaEntrada = 1;
+}
+
+message Resposta{
+  string mensagem = 1;
+}

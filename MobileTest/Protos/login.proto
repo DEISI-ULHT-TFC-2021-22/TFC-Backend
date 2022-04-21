@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option csharp_namespace = "Server";
+
+package login;
+
+service Login {
+  rpc LoginRequest (LoginData) returns (LoginAutorization);
+  rpc ChangePassword (NewLoginData) returns (PasswordChanged);
+}
+
+// The request message
+message LoginData {
+  string login = 1;
+  string password = 2;
+}
+
+// The response message
+message LoginAutorization {
+  bool loginEfetuado = 1;
+  int32 tipo_user = 2;
+}
+
+// The request message
+message NewLoginData {
+	string login = 1;
+	string oldPass = 2;
+	string newPass = 3;
+}
+
+// The response message
+message PasswordChanged {
+	bool passAlterada = 1;
+}
