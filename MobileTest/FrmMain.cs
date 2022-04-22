@@ -5,6 +5,7 @@ namespace MobileTest
 {
     public partial class frmMain : Form
     {
+        private GrpcChannel channel1 = GrpcChannel.ForAddress(@"https://localhost:7025");
         private GrpcChannel? channel = null;
 
         public frmMain()
@@ -46,7 +47,7 @@ namespace MobileTest
             var client = new Mobile.MobileClient(channel);
             var input = new Pedido { CancelaEntrada = Entrar };
             var reply = await client.AbrirCancelaAsync(input);
-            lblParkAccess.Text = "Resultado: " + reply.Mensagem; 
+            lblParkAccess.Text = "Resultado: " + reply.Mensagem;
         }
 
         private async void btnMudaPass_Click(object sender, EventArgs e)

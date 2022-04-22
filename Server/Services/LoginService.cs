@@ -29,11 +29,20 @@ namespace Server.Services
             // Validar os dados de login na BD
             Boolean DBResult = true;  // chamar storage procedure validar login com params (request.Login.Equals("abc") && request.Password.Equals("123"))
 
+            Console.WriteLine("Recebido pedido de autenticação do utilizador " + pedido.Login);
 
             // para testar antes de ligar à BD
             DBResult = pedido.Login == "xpto" && pedido.Password == "123";
 
-            
+            if (DBResult)
+            {
+                Console.WriteLine("Autenticação do utilizador bem sucedida!");
+            }
+            else
+            {
+                Console.WriteLine("Autenticação invalida!");
+            }
+
             // TODO
             // Atualizar o tipo de utilizador
 
@@ -43,6 +52,8 @@ namespace Server.Services
         public override Task<PasswordChanged> ChangePassword(NewLoginData pedido, ServerCallContext context)
         {
             int numMaxCarateres = 20;
+
+            Console.WriteLine("Recebido pedido de alteraçãode password do utilizador " + pedido.Login);
 
             // Verifica se o tamanho da password é superior ao num max de caracteres definido em "numMaxCarateres"
             if (pedido.NewPass.Length > numMaxCarateres)

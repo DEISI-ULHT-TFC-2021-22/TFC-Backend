@@ -19,13 +19,25 @@ namespace MatriculaTest.Services
                 // Retira dados pela camera de entrada
                 //return Task.FromResult(new DadosMatricula { Matricula = "AA-00-00", Foto = null });
 //                await responseStream.WriteAsync(new DadosMatricula { Matricula = "AA-00-00", Foto = null });
+
+                    // Tira foto com a camera de entrada
             }
             else
             {
                 // Retira dados pela camera de saida
                 //return Task.FromResult(new DadosMatricula { Matricula = "00-00-AA", Foto = null });
 //                await responseStream.WriteAsync(new DadosMatricula { Matricula = "00-00-AA", Foto = null });
+
+                    // Tira foto com a camera de entrada
             }
+
+            //tratar os dados da foto tirada
+            //recolhes a matricula
+            // devolves a matricula e a foto
+
+
+
+
 
 
 
@@ -57,6 +69,12 @@ namespace MatriculaTest.Services
 
             //Complete request
             //await responseStream.CompleteAsync();
+        }
+
+        public override async Task<DadosMatriculaTmp> GetMatriculaTmp(Camera request, ServerCallContext context)
+        {
+
+            return await Task.FromResult(new DadosMatriculaTmp { Matricula = "00-00-AA" });
         }
     }
 }
