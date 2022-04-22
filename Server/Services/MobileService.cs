@@ -29,8 +29,8 @@ namespace Server.Services
 
             // Chamar serviço de disponibilidade
             var webService = new Matriculas.MatriculasClient(channel);
-            var pedido1 = new ExisteDisponibilidade { };
-            var respostaDisponibilidade = await webService.GetDisponibilidadeAsync(pedido1);
+            var pedido1 = new ExisteDisponibilidade { DisponivelNovaEntrada = pedido.CancelaEntrada };
+            var respostaDisponibilidade = webService.GetDisponibilidade(pedido1);
 
             // Verificar disponibilidade do serviço (ver se não está a processar outro pedido)
             if (!respostaDisponibilidade.Disponivel)

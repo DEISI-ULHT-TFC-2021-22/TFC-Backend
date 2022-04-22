@@ -5,8 +5,18 @@ option csharp_namespace = "Server";
 package matriculas;
 
 service Matriculas {
-  rpc SetMatricula (Dados) returns (DadosRecebidos);
   rpc GetDisponibilidade (ExisteDisponibilidade) returns (Disponibilidade);
+  rpc SetMatricula (Dados) returns (DadosRecebidos);
+}
+
+// The request message
+message ExisteDisponibilidade{
+	bool disponivelNovaEntrada = 1;
+}
+
+// The response message
+message Disponibilidade{
+	bool disponivel = 1;
 }
 
 // The request message
@@ -20,12 +30,4 @@ message Dados {
 
 // The response message
 message DadosRecebidos {
-	bool recebidos = 1; // só para teste
-}
-
-message ExisteDisponibilidade{
-}
-
-message Disponibilidade{
-	bool disponivel = 1;
 }
