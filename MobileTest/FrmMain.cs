@@ -19,12 +19,17 @@ namespace MobileTest
             var client = new Login.LoginClient(channel);
             var input = new LoginData { Login = txtBxUsername.Text, Password = txtBxPassword.Text };
 
-            
-
             try
             {
                 var reply = await client.LoginRequestAsync(input);
-                lblLogin.Text = "Resultado: " + reply.LoginEfetuado.ToString() + " Tipo de utilizador = " + reply.TipoUser.ToString();
+                if (reply.LoginEfetuado)
+                {
+                    lblLogin.Text = "Resultado: Benvindo " + input.Login;
+                }
+                else
+                {
+                    lblLogin.Text = "Resultado: Login invalido";
+                }
             }
             catch
             {
@@ -54,8 +59,24 @@ namespace MobileTest
         {
             var client = new Login.LoginClient(channel);
             var input = new NewLoginData { Login = "xpto", OldPass = txtBxPassAntiga.Text, NewPass = txtBxNovaPass.Text };
-            var reply = await client.ChangePasswordAsync(input);
-            lblMudaPass.Text = "Resultado: " + reply.PassAlterada.ToString();
+            if (txtBxNovaPass.Text == txtBxRepNovaPass.Text)
+            {
+                var reply = await client.ChangePasswordAsync(input);
+                lblMudaPass.Text = "Resultado: " + reply.PassAlterada.ToString();
+            }
+            else
+            {
+                lblMudaPass.Text = "Resultado: Os campos da nova password não são iguais!";
+            }
+        }
+
+        private void btnVerifParkDisp_Click(object sender, EventArgs e)
+        {
+            GrpcChannel channel1 = GrpcChannel.ForAddress(@"https://localhost:7203");
+            var client = new Matriculas.MatriculasClient(channel1);
+            var input = new ExisteDisponibilidade { DisponivelNovaEntrada = true };
+            var reply = client.GetDisponibilidade(input);
+            lblParkDisponibilidade.Text = "Resultado: " + reply.Disponivel.ToString();
         }
     }
 }

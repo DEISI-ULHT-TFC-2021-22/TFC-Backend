@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option csharp_namespace = "Server";
+
+package matriculas;
+
+service Matriculas {
+  rpc GetDisponibilidade (ExisteDisponibilidade) returns (Disponibilidade);
+  rpc SetMatricula (Dados) returns (DadosRecebidos);
+}
+
+// The request message
+message ExisteDisponibilidade{
+	bool disponivelNovaEntrada = 1;
+}
+
+// The response message
+message Disponibilidade{
+	bool disponivel = 1;
+}
+
+// The request message
+message Dados {
+	bool cameraEntrada = 1;
+	string matricula = 2;
+	string fotoLocation = 3;
+	string user = 4;
+	string msgValidacao = 5;
+}
+
+// The response message
+message DadosRecebidos {
+}

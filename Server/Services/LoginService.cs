@@ -72,10 +72,12 @@ namespace Server.Services
             {
                 // TODO
                 // Altera a password do utilizador na BD
+                Console.WriteLine("Password do utilizador " + pedido.Login + " não foi alterada!");
                 return Task.FromResult(new PasswordChanged { PassAlterada = true });
             }
             else
             {
+                Console.WriteLine("Password do utilizador " + pedido.Login + " alterada!");
                 return Task.FromResult(new PasswordChanged { PassAlterada = false });
             }
         }

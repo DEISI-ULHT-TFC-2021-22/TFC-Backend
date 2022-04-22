@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Protos\login.proto" />
+    <None Remove="Protos\matriculas.proto" />
     <None Remove="Protos\mobile.proto" />
   </ItemGroup>
 
@@ -24,6 +25,7 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\login.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\matriculas.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\mobile.proto" GrpcServices="Client" />
   </ItemGroup>
 

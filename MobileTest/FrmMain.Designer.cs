@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.lblParkDisponibilidade = new System.Windows.Forms.Label();
+            this.btnVerifParkDisp = new System.Windows.Forms.Button();
             this.btnMudaPass = new System.Windows.Forms.Button();
             this.lblMudaPass = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -51,6 +53,8 @@
             // 
             // pnlMain
             // 
+            this.pnlMain.Controls.Add(this.lblParkDisponibilidade);
+            this.pnlMain.Controls.Add(this.btnVerifParkDisp);
             this.pnlMain.Controls.Add(this.btnMudaPass);
             this.pnlMain.Controls.Add(this.lblMudaPass);
             this.pnlMain.Controls.Add(this.label5);
@@ -74,13 +78,32 @@
             this.pnlMain.Size = new System.Drawing.Size(394, 484);
             this.pnlMain.TabIndex = 0;
             // 
+            // lblParkDisponibilidade
+            // 
+            this.lblParkDisponibilidade.AutoSize = true;
+            this.lblParkDisponibilidade.Location = new System.Drawing.Point(28, 276);
+            this.lblParkDisponibilidade.Name = "lblParkDisponibilidade";
+            this.lblParkDisponibilidade.Size = new System.Drawing.Size(62, 15);
+            this.lblParkDisponibilidade.TabIndex = 20;
+            this.lblParkDisponibilidade.Text = "Resultado:";
+            // 
+            // btnVerifParkDisp
+            // 
+            this.btnVerifParkDisp.Location = new System.Drawing.Point(252, 272);
+            this.btnVerifParkDisp.Name = "btnVerifParkDisp";
+            this.btnVerifParkDisp.Size = new System.Drawing.Size(109, 23);
+            this.btnVerifParkDisp.TabIndex = 19;
+            this.btnVerifParkDisp.Text = "Verif. Park Disp.";
+            this.btnVerifParkDisp.UseVisualStyleBackColor = true;
+            this.btnVerifParkDisp.Click += new System.EventHandler(this.btnVerifParkDisp_Click);
+            // 
             // btnMudaPass
             // 
-            this.btnMudaPass.Location = new System.Drawing.Point(286, 419);
+            this.btnMudaPass.Location = new System.Drawing.Point(275, 419);
             this.btnMudaPass.Name = "btnMudaPass";
-            this.btnMudaPass.Size = new System.Drawing.Size(75, 23);
+            this.btnMudaPass.Size = new System.Drawing.Size(86, 23);
             this.btnMudaPass.TabIndex = 18;
-            this.btnMudaPass.Text = "Test Login";
+            this.btnMudaPass.Text = "Alterar Pass";
             this.btnMudaPass.UseVisualStyleBackColor = true;
             this.btnMudaPass.Click += new System.EventHandler(this.btnMudaPass_Click);
             // 
@@ -192,11 +215,11 @@
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(286, 97);
+            this.btnLogin.Location = new System.Drawing.Point(275, 97);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(75, 23);
+            this.btnLogin.Size = new System.Drawing.Size(86, 23);
             this.btnLogin.TabIndex = 5;
-            this.btnLogin.Text = "Test Login";
+            this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
@@ -260,5 +283,7 @@
         private Label label5;
         private Button btnMudaPass;
         private Label lblMudaPass;
+        private Label lblParkDisponibilidade;
+        private Button btnVerifParkDisp;
     }
 }
