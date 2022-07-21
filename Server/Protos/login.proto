@@ -18,7 +18,7 @@ message LoginData {
 // The response message
 message LoginAutorization {
   bool loginEfetuado = 1;
-  int32 tipo_user = 2;
+  string tipo_user = 2;
 }
 
 // The request message

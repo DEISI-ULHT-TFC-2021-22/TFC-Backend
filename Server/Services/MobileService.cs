@@ -24,149 +24,110 @@ namespace Server.Services
     {
         public override async Task<Resposta> AbrirCancela(Pedido pedido, ServerCallContext context)
         {
-            GrpcChannel channel = GrpcChannel.ForAddress(@"https://localhost:7064");
-            string mensagem = "";
+            GrpcChannel channelWeb = GrpcChannel.ForAddress(@"https://localhost:7203");
+            string msgMobile = "";
+            string msgWeb = "";
+            Boolean podeEntrar = false;
 
             // Chamar serviço de disponibilidade
-            var webService = new Matriculas.MatriculasClient(channel);
-            var pedido1 = new ExisteDisponibilidade { DisponivelNovaEntrada = pedido.CancelaEntrada };
-            var respostaDisponibilidade = webService.GetDisponibilidade(pedido1);
+            var webService = new Web.WebClient(channelWeb);
+            var disponibilidade = new ExisteDisponibilidade { DisponivelNovaEntrada = pedido.CancelaEntrada };
+            var respostaDisponibilidade = webService.GetDisponibilidade(disponibilidade);
 
             // Verificar disponibilidade do serviço (ver se não está a processar outro pedido)
             if (!respostaDisponibilidade.Disponivel)
             {
-                mensagem = "Existe outro pedido em processamento. Tente novamente quando for o 1º da fila. Obrigado";
+                msgMobile = "Existe outro pedido em processamento. Tente novamente quando for o 1º da fila. Obrigado ";
             }
             else
             {
                 // Se for para Entrar
                 if (pedido.CancelaEntrada)
                 {
-
-                    // TODO
                     // verifica se o parque está pago
-
-                    if (false/* parque por pagar */)
+                    if (!(Boolean.Parse(SQLAccess.ExecSQLReturnData("exec spPermiteEntrada_EntradaValida '" + pedido.Login + "'"))))
                     {
-                        mensagem = "O estacionamento encontra-se para pagamento! Por favor regularize a situação para poder estacionar!";
+                        msgMobile = "O estacionamento encontra-se para pagamento! Por favor regularize a situação para poder estacionar! ";
+                        msgWeb = "O pagamento do estacionamento está por regularizar! ";
                     }
 
-                    // TODO
-                    // verifica se não está a tentar entrar uma 2ª vez
-
-                    if (true /* Já existe uma viatura dentro do parque associada ao seu utilizador! */)
+                    // verifica se não está a tentar entrar uma 2ª vez. Se já existe uma viatura dentro do parque associada ao seu utilizador!
+                    if (Boolean.Parse(SQLAccess.ExecSQLReturnData(" exec spPermiteEntrada_JaEstaNoParque '" + pedido.Login + "'")))
                     {
-                        mensagem = "Já existe uma viatura dentro do parque associada ao seu utilizador!";
+                        msgMobile = "Já existe uma viatura dentro do parque associada ao seu utilizador! ";
+                        msgWeb = "Já existe uma viatura dentro do parque associada a este utilizador! ";
                     }
                 }
 
-                //
+                // Pede matricula
+                GrpcChannel channelMatriculas = GrpcChannel.ForAddress(@"http://localhost:7065");
+                var matriculasService = new Matriculas.MatriculasClient(channelMatriculas);
+                var getMatricula = new Camera { CameraEntrada = pedido.CancelaEntrada };
+                var dadosMatricula = new DadosMatricula();
 
+                var tempFile = @"\\localhost\Fotos\temp.tmp";
+                var finalFile = tempFile;
+                Boolean notDone = true;
 
-
-
-                // Se for para Entrar
-                if (pedido.CancelaEntrada)
+                using (var matricula = matriculasService.GetMatricula(getMatricula))
                 {
-                    // TODO
-                    // verifica a matricula da viatura.
-                    if (true /* matricula valida */)
-                    //if (reply.Matricula.Equals("AA-00-00"))
+                    await using (var fileStream = File.OpenWrite(tempFile))
                     {
-                        mensagem = "Acesso autorizado! Benvindo!";
+                        await foreach (var dados in matricula.ResponseStream.ReadAllAsync().ConfigureAwait(false))
+                        {
+                            if (!String.IsNullOrEmpty(dados.Matricula) && notDone)
+                            {
+                                finalFile = @"\\localhost\Fotos\" + dados.Matricula + $"_{DateTime.UtcNow.ToString("yyyyMMdd_HHmmss")}.jpg";
+                                dadosMatricula = dados;
+                                notDone = false;
+                            }
+
+                            if (dados.Foto.Length == dados.BlockSize)
+                            {
+                                fileStream.Write(dados.Foto.ToByteArray());
+                            }
+                            else
+                            {
+                                fileStream.Write(dados.Foto.ToByteArray(), 0, dados.BlockSize);
+                            }
+                        }
+                    }
+                }
+
+                if (finalFile != tempFile)
+                {
+                    File.Move(tempFile, finalFile);
+                }
+
+                string fotoLocation = Path.GetFileName(finalFile);
+
+                // verifica a matricula da viatura.
+                if (Boolean.Parse(SQLAccess.ExecSQLReturnData("exec spMatriculas_MatriculaValida '" + pedido.Login + "', '" + dadosMatricula.Matricula + "'")))
+                {
+                    // Se for para Entrar
+                    if (pedido.CancelaEntrada)
+                    {
+                        msgMobile = "Acesso autorizado! Benvindo! ";
+                        msgWeb = "Acesso autorizado! ";
                     }
                     else
                     {
-                        mensagem = "Esta viatura não está associada ao seu utilizador! Fale com o segurança!";
+                        msgMobile = "Boa viagem! ";
+                        msgWeb = "Saida Autorizada! ";
                     }
+                    podeEntrar = true;
                 }
                 else
                 {
-                    // TODO
-                    // verifica a matricula da viatura.
-                    if (true /* matricula valida */)
-                    {
-                        mensagem = "Boa viagem!";
-                    }
-                    else
-                    {
-                        mensagem = "Esta viatura não está associada ao seu utilizador! Fale com o segurança!";
-                    }
+                    msgMobile = "Esta viatura não está associada ao seu utilizador! Fale com o segurança! ";
+                    msgWeb = "Esta viatura não está associada a este utilizador! ";
                 }
+
+                // Enviar os dados para a plataforma web
+                var dadosPorAutorizar = new Dados { CameraEntrada = pedido.CancelaEntrada, Matricula = dadosMatricula.Matricula, FotoLocation = fotoLocation, User = pedido.Login, MsgValidacao = msgWeb, PodeEntrar = podeEntrar };
+                webService.SendCancelaRequest(dadosPorAutorizar);
             }
-
-            return await Task.FromResult(new Resposta { Mensagem = "Já existe uma viatura dentro do parque associada ao seu utilizador!" });
-        }
-
-        public override async Task<EnterParkReply> EnterParkRequest(EnterPark request, ServerCallContext context)
-        {
-            // TODO
-            // 1º Verificar disponibilidade do serviço (ver se não está a processar outro pedido)
-
-
-            // TODO
-            // verifica se o parque está pago
-            if (false/* parque por pagar */)
-            {
-                return await Task.FromResult(new EnterParkReply { Message = "O estacionamento encontra-se para pagamento! Por favor regularize a situação para poder estacionar!" });
-            }
-
-            var channel = GrpcChannel.ForAddress(@"https://localhost:7158");
-            var client = new Matriculas.MatriculasClient(channel);
-            var input = new Camera{ CameraEntrada = true };
-            //var reply = await Task.FromResult(client.GetMatricula(input));
-            //            DadosMatricula dados = new DadosMatricula(reply);
-            //            Console.WriteLine(reply.Matricula);
-
-            string matricula = "";
-/*
-            //Get dados da matricula do stream
-            string path = @"\Fotos\imagem1.jpg";
-            await using var writeStream = File.Create(path);
-
-            using (var call = client.GetMatricula(input))//.ResponseStream.ReadAllAsync());
-            {
-                if (await call.ResponseStream.ReadAllAsync != null)
-                {
-                    await File.WriteAllTextAsync(path, call.Metadata.ToString());
-                }
-                if (message.Data != null)
-                {
-                    await writeStream.WriteAsync(message.Data.Memory);
-                }
-            }
-*/
-            /*
-            //Get dados da matricula do stream
-            using (var call = client.GetMatricula(input))
-            {
-                while (await call.ResponseStream.MoveNext())
-                {
-                    var reply = call.ResponseStream.Current;
-                    matricula = reply.Matricula;
-                }
-            }
-            */
-
-            var channel1 = GrpcChannel.ForAddress(@"https://localhost:7064");
-            var client1 = new Matriculas.MatriculasClient(channel1);
-            var input1 = new Dados { CameraEntrada = true, FotoLocation = "Não sei onde está!", Matricula = matricula, User = "userXPTO" };
-
-            var reply1 = await Task.FromResult(client1.SetMatricula(input1));
-            Console.WriteLine(reply1.Recebidos);
-
-
-            //reply = await client.EnterParkRequestAsync(input);
-
-            //            dados.Matricula = reply.matricula;
-            //            dados.Foto = reply.foto;
-
-            // TODO
-            // verifica se não está a tentar entrar uma 2ª vez
-            if (true /* Já existe uma viatura dentro do parque associada ao seu utilizador! */)
-            {
-                return await Task.FromResult(new EnterParkReply { Message = "Já existe uma viatura dentro do parque associada ao seu utilizador!" });
-            }
+            return await Task.FromResult(new Resposta { Mensagem = msgMobile });
         }
     }
 }

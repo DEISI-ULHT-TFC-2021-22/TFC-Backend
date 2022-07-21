@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+option csharp_namespace = "Server";
+
+package web;
+
+service Web {
+  rpc GetDisponibilidade (ExisteDisponibilidade) returns (Disponibilidade);
+  rpc SendCancelaRequest (Dados) returns (Nothing);
+  rpc GetAllUsers (Nothing) returns (stream DadosUser);
+  rpc GetAllMatriculas (User) returns (stream ListaMatriculas);
+  rpc InsertUser (DadosUserInsert) returns (Nothing);
+  rpc EditUser (DadosUser) returns (Nothing);
+  rpc SearchUser (User) returns (DadosUser);
+  rpc SearchMatricula (ListaMatriculas) returns (DadosUser);
+  rpc InsertMatricula (DadosAuto) returns (Nothing);
+  rpc EditMatricula (DadosAuto) returns (Nothing);
+  rpc InsertEntryPermition (DadosPermEntrada) returns (Nothing);
+  rpc EditEntryPermition (DadosPermEntrada) returns (Nothing);
+  rpc GetEntryPermitionData (User) returns (DadosPermEntrada);
+  rpc RegisterEntry (DadosAuto) returns (Nothing);
+  rpc RegisterExit (DadosAuto) returns (Nothing);
+  rpc PlateRevalidation(DadosAuto) returns (MatriculaValida);
+}
+
+// The request message
+message ExisteDisponibilidade{
+	bool disponivelNovaEntrada = 1;
+}
+
+// The response message
+message Disponibilidade{
+	bool disponivel = 1;
+}
+
+// The request message
+message Dados {
+	bool cameraEntrada = 1;
+	string matricula = 2;
+	string fotoLocation = 3;
+	string user = 4;
+	string msgValidacao = 5;
+	bool podeEntrar = 6;
+}
+
+// The request/response message
+message Nothing {
+}
+
+// The response message
+message DadosUser {
+	string tipoUser = 1;
+	string nome = 2;
+	string login = 3;
+	bool contaAtivada = 4;
+}
+
+// The request message
+message User {
+	string login = 1;
+}
+
+// The response message
+message ListaMatriculas {
+	string Matricula = 1;
+}
+
+// The request message
+message DadosUserInsert {
+	string tipoUser = 1;
+	string nome = 2;
+	string login = 3;
+	string password = 4;
+	bool contaAtivada = 5;
+}
+
+// The request message
+message DadosPermEntrada {
+	string login = 1;
+	string pagoDesde = 2;
+	string pagoAte = 3;
+	bool parqueGratis = 4;
+}
+
+// The request message
+message DadosAuto {
+	string login = 1;
+	string matricula = 2;
+}
+
+// The response message
+message MatriculaValida
+{
+	string resposta = 1;
+}
