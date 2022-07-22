@@ -13,8 +13,8 @@
 5. Na nova janela, no campo 'Database name' escrever 'ParkingLotDB' e depois pressionar o botão ok para criar a base de dados
 ![db2](https://user-images.githubusercontent.com/104139081/180336939-320f44c6-3771-4eeb-a1e4-cb1d36d63f3f.png)
 
-6. Pressionar em 'New Query' ou Ctrl+N para criar uma nova query e arrastar o ficheiro 'script.sql' para dentro dessa janela.
-![db3](https://user-images.githubusercontent.com/104139081/180337018-4ee15d82-c3ce-4dde-bb2c-9ee39a2cd616.png)
+6. Pressionar em 'New Query' ou Ctrl+N para criar uma nova query e arrastar o ficheiro 'script.sql' para dentro dessa janela que se encontra na raiz deste repositorio.
+![db3](https://user-images.githubusercontent.com/104139081/180337564-730e390e-e798-4b03-af88-a3900fce82f2.png)
 
 7. Depois pressionar em 'Execute' ou Alt+X para executar o script ficando assim concluida a instalação da Base de Dados
 
@@ -26,7 +26,7 @@
 ![2](https://user-images.githubusercontent.com/104139081/164999306-1bede529-492f-472b-bdf7-264952c3fe1e.png)
 
 10. Faça o download dos ficheiros do repositório do Front end deste tfc: https://github.com/DEISI-ULHT-TFC-2021-22/ParqueLusofona_Frontend
-e do repositorio da Deteção de Matriculas: https://github.com/DEISI-ULHT-TFC-2021-22/TFC-Deisi243-Detecao-Matriculas
+e dos ficheiros do repositorio da Deteção de Matriculas: https://github.com/DEISI-ULHT-TFC-2021-22/TFC-Deisi243-Detecao-Matriculas
 
 11. Dentro do visual studio selecione a opção de adicionar um projeto existente e adicione o projecto do Front end
 ![3](https://user-images.githubusercontent.com/104139081/164999376-b6ccdff2-6585-4629-90a0-ddb90909acf6.png)
