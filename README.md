@@ -53,4 +53,4 @@ e dos ficheiros do repositorio da Deteção de Matriculas: https://github.com/DE
 18. Correr o projeto
 ![6](https://user-images.githubusercontent.com/104139081/164999518-4d32f0b1-b9d0-4955-ba17-11c6b242fde4.png)
 
-19. Exemplo de utilização: https://youtu.be/rVSVYDrFEsM
+19. Exemplo de utilização: https://www.youtube.com/watch?v=kNjaHaQUppE
