@@ -25,13 +25,13 @@
 9. Faça o donwload dos ficheiros deste repositório e abra o ficheiro "TFC.sln"
 ![2](https://user-images.githubusercontent.com/104139081/164999306-1bede529-492f-472b-bdf7-264952c3fe1e.png)
 
-10. Dentro da pasta 'Server' existe a pasta 'Fotos' que deve ser partilhada. Para isso, pressionar a referida pasta 'Fotos' com a tecla do lado direito do rato e selecionar a opção 'propriedades'
+10. Dentro da pasta 'Server' existe a pasta 'Fotos' que deve ser partilhada. Para isso, pressionar a referida pasta 'Fotos' com a tecla do lado direito do rato e selecionar a opção 'propriedades'                                                                             
 ![PR1](https://user-images.githubusercontent.com/104139081/180352683-8150570a-beb5-440a-a6e9-e05128a9525d.png)
 
 11. Depois selecionar a tab  'Partilhar' pressionar o botão 'Partilha Avançada...'
 ![PR2](https://user-images.githubusercontent.com/104139081/180352836-5cb80718-bb6e-4f1b-a458-bab47c2d4849.png)
 
-12. Na nova janela selecionar a check box 'Partilhar esta pasta', defenir o nome da partilha como 'Fotos' e de seguida selecionar o botão 'permissões'
+12. Na nova janela selecionar a check box 'Partilhar esta pasta', defenir o nome da partilha como 'Fotos' e de seguida selecionar o botão 'permissões'          
 ![PR3](https://user-images.githubusercontent.com/104139081/180353079-55b328f7-e893-494d-8caf-db7a0da50b16.png)
 
 13. Na janela 'Permissões para Fotos' selecionar 'Controlo total' pressionando em 'Ok' nesta e nas outras duas janelas anteriores
