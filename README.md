@@ -5,7 +5,7 @@
 
 2. Instalar o Microsoft SQL Server Management Studio (Microsoft SSMS)
 
-3. No Microsoft SSMS fazer login com a conta de 'sa'
+3. No Microsoft SSMS fazer login com a conta de 'sa'                                                          
 ![db4](https://user-images.githubusercontent.com/104139081/180337974-4335d5f2-d09f-4a2b-b4ca-bbb1807955dc.png)
 
 4. Pressinar com a tecla do lado direito do rato em cima da pasta 'Databases' e selecionar 'New Database...'
